@@ -28,7 +28,6 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding-bottom: 80px; /* Space for admin button */
         }
 
         .container {
@@ -37,6 +36,7 @@
             background-color: var(--card-bg);
             min-height: 100vh;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding-bottom: 30px;
         }
 
         /* HEADER */
@@ -139,6 +139,16 @@
         .content-area {
             padding: 20px;
         }
+        
+        .main-category-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: none; /* Disembunyikan default, dimunculkan via JS jika perlu */
+        }
 
         .category-section {
             background: var(--category-bg);
@@ -218,91 +228,8 @@
             transition: color 0.2s;
         }
 
+        .link-actions a:hover i, 
         .link-actions i:hover { color: var(--primary); }
-
-        /* ADMIN BUTTON & MODE */
-        .admin-fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: #334155;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 100;
-            border: none;
-        }
-
-        .edit-mode-active .admin-fab {
-            background: #ef4444; /* Merah untuk mode edit */
-        }
-
-        .edit-controls {
-            display: none;
-        }
-
-        .edit-mode-active .edit-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .edit-mode-active .normal-controls {
-            display: none;
-        }
-
-        .btn-add-link {
-            display: none;
-            width: 100%;
-            padding: 10px;
-            background: #e2e8f0;
-            border: 2px dashed #94a3b8;
-            border-radius: 8px;
-            color: #475569;
-            font-weight: 600;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-
-        .edit-mode-active .btn-add-link {
-            display: block;
-        }
-
-        /* EXPORT MODAL */
-        #exportModal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px;
-        }
-        .modal-content textarea {
-            width: 100%;
-            height: 200px;
-            margin: 10px 0;
-            font-family: monospace;
-            font-size: 12px;
-            padding: 10px;
-        }
-        .btn-group { display: flex; gap: 10px; justify-content: flex-end;}
-        .btn { padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600;}
-        .btn-primary { background: var(--primary); color: white;}
     </style>
 </head>
 <body>
@@ -330,56 +257,80 @@
         </div>
 </div>
 
-<button class="admin-fab" id="adminBtn" onclick="toggleEditMode()" title="Mode Edit">
-    <i class="fa-solid fa-pen-to-square"></i>
-</button>
-
-<div id="exportModal">
-    <div class="modal-content">
-        <h3>Simpan Perubahan Permanen</h3>
-        <p style="font-size: 13px; color: #666; margin-top: 5px;">Copy seluruh teks di bawah ini, lalu timpa tulisan <br><code>const defaultData = [...]</code> di dalam file <b>index.html</b> Anda di GitHub.</p>
-        <textarea id="exportData" readonly></textarea>
-        <div class="btn-group">
-            <button class="btn" onclick="closeExport()">Tutup</button>
-            <button class="btn btn-primary" onclick="copyExport()">Copy Kode</button>
-        </div>
-    </div>
-</div>
-
 <script>
     // ==========================================
-    // DATA DEFAULT (Edit manual di sini jika di GitHub)
+    // DATA LINK DENGAN STRUKTUR BARU
     // ==========================================
-    const defaultData = [
+    const dataAplikasi = [
         {
-            id: "emis",
-            title: "EMIS",
-            icon: "fa-house-chimney",
-            links: [
-                { name: "EMIS 4.0", url: "https://emis.kemenag.go.id" },
-                { name: "SIMPATIKA", url: "https://simpatika.kemenag.go.id" },
-                { name: "Login Admin", url: "#" },
-                { name: "Login PTK", url: "#" },
-                { name: "EMIS GTK (New)", url: "#" }
+            id: "madrasah",
+            title: "MADRASAH",
+            icon: "fa-building-columns",
+            subCategories: [
+                {
+                    title: "EMIS",
+                    icon: "fa-house-chimney",
+                    links: [
+                        { name: "EMIS 4.0", url: "https://emis.kemenag.go.id" },
+                        { name: "SIMPATIKA USER", url: "https://paspor.siap-online.com/cas/login?&service=https://padamu.siap.web.id/login" },
+                        { name: "SIMPATIKA ADMIN", url: "https://paspor.siap-online.com/cas/login?&service=https://simpadamu.siap.web.id/" },
+                        { name: "Login PTK", url: "#" },
+                        { name: "EMIS GTK (New)", url: "#" }
+                    ]
+                },
+                {
+                    title: "VERVAL",
+                    icon: "fa-square-check",
+                    links: [
+                        { name: "SDM Pusdatin", url: "https://sdm.data.kemdikbud.go.id" },
+                        { name: "PD Data", url: "https://pd.data.kemdikbud.go.id" }
+                        
+                    ]
+                },
+                {
+                    title: "UJIAN",
+                    icon: "fa-pen-to-square",
+                    links: [
+                        { name: "PDUM", url: "https://pdum.kemenag.go.id" },
+                        { name: "ANBK", url: "https://anbk.kemdikbud.go.id" }
+                    ]
+                }
             ]
         },
         {
-            id: "verval",
-            title: "VERVAL",
-            icon: "fa-square-check",
-            links: [
-                { name: "SDM Pusdatin", url: "https://sdm.data.kemdikbud.go.id" },
-                { name: "PD Data", url: "https://pd.data.kemdikbud.go.id" },
-                { name: "Cek NISN", url: "https://nisn.data.kemdikbud.go.id" }
+            id: "siswa",
+            title: "SISWA",
+            icon: "fa-user-graduate",
+            subCategories: [
+                {
+                    title: "LAYANAN SISWA",
+                    icon: "fa-users",
+                    links: [
+                        { name: "Cek NISN", url: "https://nisn.data.kemdikbud.go.id" }
+                        { name: "Validasi Data Siswa Kelas 12", url: "https://script.google.com/macros/s/AKfycbzZf5Av2MtUYdRjaohDeagbIL9v-z_nBs6Hr_M8zIyd2RRxBzr1g4rCd9IwuFRSbQ9e/exec" },
+                        { name: "Permohonan Berkas", url: "https://script.google.com/macros/s/AKfycbxtFV_ad8xsA85-m6h8W6Jwm3Tw61-9srD8CvPHn72d0nXbLms9IXHNnMxY3GB1Wv23/exec" },
+                        { name: "SKL Sementara", url: "https://script.google.com/macros/s/AKfycbzgtuzQEj-btiA3CVqssmNBSwzYyCXEjuIAtgRRA7mVCi08LAmJMQCBCveBy3lhbUyl/exec" },
+                        { name: "Portal Permohonan Surat", url: "https://script.google.com/macros/s/AKfycbwLxo5CNl17ft0lav0fhSQavY8d4Gp9hu2CXuO5yhSYYy6XGeLFTK_dkr7U6gRqB_ox/exec" }
+                    ]
+                }
             ]
         },
         {
-            id: "ujian",
-            title: "UJIAN",
-            icon: "fa-pen-to-square",
-            links: [
-                { name: "PDUM", url: "https://pdum.kemenag.go.id" },
-                { name: "ANBK", url: "https://anbk.kemdikbud.go.id" }
+            id: "guru",
+            title: "GURU",
+            icon: "fa-chalkboard-user",
+            subCategories: [
+                {
+                    title: "LAYANAN GURU",
+                    icon: "fa-briefcase",
+                    links: [
+                        { name: "Rekap Nilai ATPM", url: "https://op-ma.github.io/rekap-atpm/" },
+                        { name: "Rekap Nilai Semester", url: "https://script.google.com/macros/s/AKfycbxXf4Wz_-pP2w7eRCvSs8b6e6i-HT4DkR7OLQuCHsLt695txPVyOFpMHZEnSnNS5TXt/exec" },
+                        { name: "Aplikasi Rapor Ma'had 4.0", url: "https://op-ma.github.io/rapor-mahad/" },
+                        { name: "Aplikasi RDM MA", url: "https://ma.almatuq.my.id/" },
+                        { name: "EMIS GTK", url: "https://paspor.siap-online.com/cas/login?&service=https://padamu.siap.web.id/login" },
+                    ]
+                }
             ]
         }
     ];
@@ -387,42 +338,35 @@
     // ==========================================
     // SISTEM APLIKASI
     // ==========================================
-    let appData = [];
-    let isEditMode = false;
     let currentFilter = 'semua';
     let searchQuery = '';
 
-    // Inisialisasi Data
     function init() {
-        const savedData = localStorage.getItem('madrasahLinksData');
-        if (savedData) {
-            appData = JSON.parse(savedData);
-        } else {
-            appData = JSON.parse(JSON.stringify(defaultData));
-        }
-        renderApp();
-    }
-
-    function renderApp() {
         renderFilters();
         renderContent();
         updateTotalLinks();
     }
 
+    // Menghitung total seluruh link dari semua sub-kategori
     function updateTotalLinks() {
-        const total = appData.reduce((sum, cat) => sum + cat.links.length, 0);
+        let total = 0;
+        dataAplikasi.forEach(mainCat => {
+            mainCat.subCategories.forEach(subCat => {
+                total += subCat.links.length;
+            });
+        });
         document.getElementById('total-links').innerText = total;
     }
 
-    // Render Tombol Kategori (Pills)
+    // Render Tombol Kategori Utama (Pills)
     function renderFilters() {
         const container = document.getElementById('filterContainer');
         container.innerHTML = `<div class="pill ${currentFilter === 'semua' ? 'active' : ''}" onclick="setFilter('semua')">Semua</div>`;
         
-        appData.forEach(cat => {
+        dataAplikasi.forEach(mainCat => {
             container.innerHTML += `
-                <div class="pill ${currentFilter === cat.id ? 'active' : ''}" onclick="setFilter('${cat.id}')">
-                    <i class="fa-solid ${cat.icon}"></i> ${cat.title}
+                <div class="pill ${currentFilter === mainCat.id ? 'active' : ''}" onclick="setFilter('${mainCat.id}')">
+                    <i class="fa-solid ${mainCat.icon}"></i> ${mainCat.title}
                 </div>
             `;
         });
@@ -434,68 +378,62 @@
         renderContent();
     }
 
-    // Render Daftar Link
+    // Render Daftar Link bersarakan Sub-Kategori
     function renderContent() {
         const container = document.getElementById('contentArea');
         container.innerHTML = '';
 
-        let filteredData = appData;
+        let filteredData = dataAplikasi;
 
-        // Filter Kategori
+        // Filter Kategori Utama (Madrasah / Siswa / Guru)
         if (currentFilter !== 'semua') {
             filteredData = filteredData.filter(cat => cat.id === currentFilter);
         }
 
-        filteredData.forEach((cat, catIndex) => {
-            // Filter Pencarian
-            const filteredLinks = cat.links.filter(link => 
-                link.name.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-
-            // Tampilkan kategori jika ada link (atau jika mode edit aktif)
-            if (filteredLinks.length > 0 || isEditMode) {
-                let html = `
-                    <div class="category-section">
-                        <div class="category-header">
-                            <div class="category-title">
-                                <i class="fa-solid ${cat.icon}" style="color: #d97706;"></i> ${cat.title}
-                            </div>
-                            <div class="link-count">${filteredLinks.length} links</div>
-                        </div>
-                `;
-
-                filteredLinks.forEach((link, linkIndex) => {
-                    // Cari index asli dari link tersebut di data utama untuk fungsi Edit/Delete
-                    const realLinkIndex = cat.links.findIndex(l => l.name === link.name && l.url === link.url);
-
-                    html += `
-                        <div class="link-card">
-                            <div class="link-number">${linkIndex + 1}</div>
-                            <div class="link-name" ${isEditMode ? `onclick="editLink(${catIndex}, ${realLinkIndex})" style="cursor:pointer; text-decoration:underline dashed;"` : ''}>
-                                ${link.name}
-                            </div>
-                            
-                            <div class="link-actions normal-controls">
-                                <a href="${link.url}" target="_blank" style="color: inherit;"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                                <i class="fa-regular fa-copy" onclick="copyToClipboard('${link.url}')" title="Copy Link"></i>
-                            </div>
-
-                            <div class="link-actions edit-controls">
-                                <i class="fa-solid fa-pen" onclick="editLink(${catIndex}, ${realLinkIndex})" style="color: #3b82f6;" title="Edit"></i>
-                                <i class="fa-solid fa-trash" onclick="deleteLink(${catIndex}, ${realLinkIndex})" style="color: #ef4444;" title="Hapus"></i>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                html += `
-                        <button class="btn-add-link" onclick="addLink(${catIndex})">
-                            <i class="fa-solid fa-plus"></i> Tambah Link ke ${cat.title}
-                        </button>
-                    </div>
-                `;
-                container.innerHTML += html;
+        filteredData.forEach((mainCat) => {
+            // Tampilkan Label Kategori Utama jika sedang di mode "Semua"
+            if(currentFilter === 'semua') {
+                container.innerHTML += `<div class="main-category-label" style="display:block;">${mainCat.title}</div>`;
             }
+
+            mainCat.subCategories.forEach((subCat) => {
+                // Filter Pencarian
+                const filteredLinks = subCat.links.filter(link => 
+                    link.name.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+
+                // Tampilkan kategori jika ada link yang sesuai pencarian
+                if (filteredLinks.length > 0) {
+                    let html = `
+                        <div class="category-section">
+                            <div class="category-header">
+                                <div class="category-title">
+                                    <i class="fa-solid ${subCat.icon}" style="color: #d97706;"></i> ${subCat.title}
+                                </div>
+                                <div class="link-count">${filteredLinks.length} links</div>
+                            </div>
+                    `;
+
+                    filteredLinks.forEach((link, linkIndex) => {
+                        html += `
+                            <div class="link-card">
+                                <div class="link-number">${linkIndex + 1}</div>
+                                <div class="link-name">${link.name}</div>
+                                
+                                <div class="link-actions">
+                                    <a href="${link.url}" target="_blank" style="color: inherit;" title="Buka Link">
+                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                    </a>
+                                    <i class="fa-regular fa-copy" onclick="copyToClipboard('${link.url}')" title="Copy Link"></i>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div>`;
+                    container.innerHTML += html;
+                }
+            });
         });
     }
 
@@ -505,91 +443,20 @@
         renderContent();
     });
 
-    // Fitur Copy
+    // Fitur Copy Link
     function copyToClipboard(text) {
+        if(text === "#" || text === "") {
+            alert("Link belum tersedia.");
+            return;
+        }
         navigator.clipboard.writeText(text).then(() => {
             alert('Link berhasil di-copy!');
+        }).catch(err => {
+            console.error('Gagal copy link: ', err);
         });
     }
 
-    // ==========================================
-    // FITUR EDIT / ADMIN
-    // ==========================================
-    function toggleEditMode() {
-        isEditMode = !isEditMode;
-        document.body.classList.toggle('edit-mode-active', isEditMode);
-        
-        const fabIcon = document.querySelector('.admin-fab i');
-        if (isEditMode) {
-            fabIcon.classList.remove('fa-pen-to-square');
-            fabIcon.classList.add('fa-check'); // Ganti ikon jadi centang
-            alert("Mode Edit Aktif! \n\n- Klik ikon Pensil untuk mengubah.\n- Klik ikon Tong Sampah untuk menghapus.\n- Klik tombol Tambah Link di bawah kategori.");
-        } else {
-            fabIcon.classList.remove('fa-check');
-            fabIcon.classList.add('fa-pen-to-square');
-            // Saat selesai edit, tampilkan modal export untuk update ke GitHub
-            showExportModal(); 
-        }
-        renderContent();
-    }
-
-    function addLink(catIndex) {
-        const name = prompt("Masukkan Nama Aplikasi:");
-        if (!name) return;
-        let url = prompt("Masukkan Link URL (awali dengan https://):", "https://");
-        if (!url) return;
-
-        appData[catIndex].links.push({ name, url });
-        saveData();
-    }
-
-    function editLink(catIndex, linkIndex) {
-        if(!isEditMode) return;
-        const link = appData[catIndex].links[linkIndex];
-        
-        const newName = prompt("Edit Nama Aplikasi:", link.name);
-        if (newName === null) return;
-        
-        const newUrl = prompt("Edit Link URL:", link.url);
-        if (newUrl === null) return;
-
-        appData[catIndex].links[linkIndex] = { name: newName, url: newUrl };
-        saveData();
-    }
-
-    function deleteLink(catIndex, linkIndex) {
-        if (confirm(`Yakin ingin menghapus link "${appData[catIndex].links[linkIndex].name}"?`)) {
-            appData[catIndex].links.splice(linkIndex, 1);
-            saveData();
-        }
-    }
-
-    function saveData() {
-        localStorage.setItem('madrasahLinksData', JSON.stringify(appData));
-        renderApp();
-    }
-
-    // Fitur Export (Untuk di-copy paste ke index.html GitHub)
-    function showExportModal() {
-        const jsonString = JSON.stringify(appData, null, 4);
-        const exportText = `const defaultData = ${jsonString};`;
-        document.getElementById('exportData').value = exportText;
-        document.getElementById('exportModal').style.display = 'flex';
-    }
-
-    function closeExport() {
-        document.getElementById('exportModal').style.display = 'none';
-    }
-
-    function copyExport() {
-        const textarea = document.getElementById('exportData');
-        textarea.select();
-        document.execCommand('copy');
-        alert("Kode berhasil disalin! Silakan paste (timpa) kode const defaultData di file index.html Anda di GitHub.");
-        closeExport();
-    }
-
-    // Jalankan aplikasi pertama kali
+    // Jalankan aplikasi
     init();
 
 </script>
