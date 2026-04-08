@@ -147,7 +147,7 @@
             margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            display: none; /* Disembunyikan default, dimunculkan via JS jika perlu */
+            display: none; 
         }
 
         .category-section {
@@ -199,7 +199,7 @@
         .link-number {
             width: 28px;
             height: 28px;
-            background: #e0e7ff; /* Soft blue/purple */
+            background: #e0e7ff; 
             color: #4f46e5;
             border-radius: 50%;
             display: flex;
@@ -283,32 +283,46 @@
                     icon: "fa-square-check",
                     links: [
                         { name: "SDM Pusdatin", url: "https://sdm.data.kemdikbud.go.id" },
+						{ name: "Verval PD", url: "https://sso.data.kemendikdasmen.go.id/sys/login" },
+						{ name: "Manajemen Ijazah", url: "https://ijazah.data.kemendikdasmen.go.id/manajemen/#/sign-in" },					
                         { name: "PD Data", url: "https://pd.data.kemdikbud.go.id" }
-                        
                     ]
                 },
                 {
-                    title: "UJIAN",
+				
+				    title: "UJIAN",
                     icon: "fa-pen-to-square",
                     links: [
                         { name: "PDUM", url: "https://pdum.kemenag.go.id" },
                         { name: "ANBK", url: "https://anbk.kemdikbud.go.id" }
+					]
+                },
+                {
+				
+					title: "BANTUAN",
+                    icon: "fa-pen-to-square",
+                    links: [
+                        { name: "ERKAM", url: "https://frontend.erkam-v2.kemenag.go.id/" },
+                        { name: "EDM", url: "https://edm-fe.erkam-v2.kemenag.go.id/" },
+						{ name: "PIP", url: "https://pipmadrasah.kemenag.go.id/" }
+					]
+                },
+                {
+						
+				
+					title: "PESANTREN",
+                    icon: "fa-mosque", // Ikon masjid untuk pesantren
+                    links: [
+                        { name: "No Surat MTs & MA", url: "https://script.google.com/macros/s/AKfycby05v7IWedC4y2dwzgbX5_blvDUMKy8jJYFWKVWISihfQdXuJZ3nQtBfO9WP-PmagGP/exec" },
+                        { name: "MAQIIS", url: "https://v2.maqiis.com/" }
+							
+
                     ]
                 }
             ]
         },
         {
 
-                    title: "PESANTREN",
-                    icon: "fa-building-columns",
-                    links: [
-                        { name: "No Surat MTs & MA", url: "https://script.google.com/macros/s/AKfycby05v7IWedC4y2dwzgbX5_blvDUMKy8jJYFWKVWISihfQdXuJZ3nQtBfO9WP-PmagGP/exec" },
-                        { name: "MAQIIS", url: "https://v2.maqiis.com/" }
-                    ]
-                }
-            ]
-        },
-        {
             id: "siswa",
             title: "SISWA",
             icon: "fa-user-graduate",
@@ -396,7 +410,7 @@
 
         let filteredData = dataAplikasi;
 
-        // Filter Kategori Utama (Madrasah / Siswa / Guru)
+        // Filter Kategori Utama (Madrasah / Pesantren / Siswa / Guru)
         if (currentFilter !== 'semua') {
             filteredData = filteredData.filter(cat => cat.id === currentFilter);
         }
